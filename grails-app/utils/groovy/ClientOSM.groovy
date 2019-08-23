@@ -62,7 +62,7 @@ class ClientOSM {
 
         try {
 
-            def res = restBuilder.post("$url/osm/vnfpkgm/v1/vnf_packages") {
+            def res = restBuilder.post("$url/osm/vnfpkgm/v1/vnf_packages_content") {
                 contentType("application/json")
                 accept("application/json")
                 header("Bearer", $bearer)
@@ -146,7 +146,7 @@ class ClientOSM {
 
         try {
 
-            def res = restBuilder.post("$url/osm/nsd/v1/ns_descriptors") {
+            def res = restBuilder.post("$url/osm/nsd/v1/ns_descriptors_content") {
                 contentType("application/json")
                 accept("application/json")
                 header("Bearer", $bearer)
@@ -241,7 +241,7 @@ class ClientOSM {
 
         try {
 
-            def res = restBuilder.post("$url/osm/nst/v1/netslice_templates") {
+            def res = restBuilder.post("$url/osm/nst/v1/netslice_templates_content") {
                 contentType("application/json")
                 accept("application/json")
                 header("Bearer", $bearer)
@@ -319,7 +319,33 @@ class ClientOSM {
         }
     }
 
-    RestResponse delete_eMBB_VNFD(String refId) {
+    RestResponse NSTInstantiate() {
+
+        try {
+
+            def res = restBuilder.post("$url/osm/nsilcm/v1/netslice_instances_content") {
+                contentType("application/json")
+                accept("application/json")
+                header("Bearer", $bearer)
+
+                json(
+                        nstId: "",
+                        nsiName: "",
+                        vimAccountId: "",
+                        nsiDescription: ""
+                )
+            }
+
+            return res
+
+        } catch (RestClientException error) {
+
+            println("RestClientException" + error)
+            return null
+        }
+    }
+
+    RestResponse delete_VNFD(String refId) {
 
         try {
 
@@ -338,7 +364,7 @@ class ClientOSM {
         }
     }
 
-    RestResponse delete_eMBB_NSD(String refId) {
+    RestResponse delete_NSD(String refId) {
 
         try {
 
@@ -357,11 +383,30 @@ class ClientOSM {
         }
     }
 
-    RestResponse delete_eMBB_NSTD(String refId) {
+    RestResponse delete_NSTD(String refId) {
 
         try {
 
             def res = restBuilder.delete("$url/osm/nst/v1/netslice_templates/${refId.trim()}") {
+                contentType("application/json")
+                accept("application/json")
+                header("Bearer", $bearer)
+            }
+
+            return res
+
+        } catch (RestClientException error) {
+
+            println("RestClientException" + error)
+            return null
+        }
+    }
+
+    RestResponse delete_NSTDInstance(String refId) {
+
+        try {
+
+            def res = restBuilder.delete("$url/osm/nsilcm/v1/netslice_instances_content/${refId.trim()}") {
                 contentType("application/json")
                 accept("application/json")
                 header("Bearer", $bearer)

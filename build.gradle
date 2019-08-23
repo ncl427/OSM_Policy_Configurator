@@ -34,6 +34,7 @@ dependencies {
     compile "org.grails:grails-web-boot"
     compile "org.grails:grails-logging"
     compile "org.grails:grails-plugin-rest"
+    compile 'org.grails:grails-datastore-rest-client'
     compile "org.grails:grails-plugin-databinding"
     compile "org.grails:grails-plugin-i18n"
     compile "org.grails:grails-plugin-services"
