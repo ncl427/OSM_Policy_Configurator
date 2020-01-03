@@ -20,25 +20,6 @@ class ClientOSM {
         password = osmPassword
     }
 
-    def sliceSelector(String sliceServiceType) {
-
-        if (sliceServiceType.trim().equalsIgnoreCase("eMBB")) {
-
-            RestResponse res = getBearerToken();
-            VNFDescriptor(res.getBody().getAt("id").toString())
-
-        } else if (sliceServiceType.trim().equalsIgnoreCase("URLLC")) {
-
-            RestResponse res = getBearerToken();
-            VNFDescriptor(res.getBody().getAt("id").toString())
-
-        } else if (sliceServiceType.trim().equalsIgnoreCase("MassiveIoT")) {
-
-            RestResponse res = getBearerToken();
-            VNFDescriptor(res.getBody().getAt("id").toString())
-        }
-    }
-
     RestResponse getBearerToken() {
 
         try {
@@ -149,7 +130,7 @@ class ClientOSM {
             def res = restBuilder.post("$url/osm/nsd/v1/ns_descriptors_content") {
                 contentType("application/json")
                 accept("application/json")
-                header("Bearer", $bearer)
+                header("Bearer", "$bearer")
 
                 json("""{
                     "nsd-catalog": {
@@ -244,7 +225,7 @@ class ClientOSM {
             def res = restBuilder.post("$url/osm/nst/v1/netslice_templates_content") {
                 contentType("application/json")
                 accept("application/json")
-                header("Bearer", $bearer)
+                header("Bearer", "$bearer")
 
                 json("""{
                     "nst": [
@@ -326,7 +307,7 @@ class ClientOSM {
             def res = restBuilder.post("$url/osm/nsilcm/v1/netslice_instances_content") {
                 contentType("application/json")
                 accept("application/json")
-                header("Bearer", $bearer)
+                header("Bearer", "$bearer")
 
                 json(
                         nstId: "",
@@ -352,7 +333,7 @@ class ClientOSM {
             def res = restBuilder.delete("$url/osm/vnfpkgm/v1/vnf_packages/${refId.trim()}") {
                 contentType("application/json")
                 accept("application/json")
-                header("Bearer", $bearer)
+                header("Bearer", "$bearer")
             }
 
             return res
@@ -371,7 +352,7 @@ class ClientOSM {
             def res = restBuilder.delete("$url/osm/nsd/v1/ns_descriptors/${refId.trim()}") {
                 contentType("application/json")
                 accept("application/json")
-                header("Bearer", $bearer)
+                header("Bearer", "$bearer")
             }
 
             return res
@@ -390,7 +371,7 @@ class ClientOSM {
             def res = restBuilder.delete("$url/osm/nst/v1/netslice_templates/${refId.trim()}") {
                 contentType("application/json")
                 accept("application/json")
-                header("Bearer", $bearer)
+                header("Bearer", "$bearer")
             }
 
             return res
@@ -409,7 +390,7 @@ class ClientOSM {
             def res = restBuilder.delete("$url/osm/nsilcm/v1/netslice_instances_content/${refId.trim()}") {
                 contentType("application/json")
                 accept("application/json")
-                header("Bearer", $bearer)
+                header("Bearer", "$bearer")
             }
 
             return res

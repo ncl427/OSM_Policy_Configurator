@@ -1,6 +1,7 @@
 package osm.policy.configurator
 
 import grails.config.Config
+import grails.plugins.rest.client.RestResponse
 import grails.validation.ValidationException
 import groovy.ClientOSM
 
@@ -32,7 +33,21 @@ class NSTDescriptorController {
         readPropertyFile();
         ClientOSM clientOSM = new ClientOSM(url, username, password)
 
-        clientOSM.sliceSelector(nstDescriptor.getName())
+        if (nstDescriptor.getName().equalsIgnoreCase("eMBB")) {
+
+            RestResponse res = getBearerToken();
+            clientOSM.VNFDescriptor(res.getBody().getAt("id").toString())
+
+        } else if (nstDescriptor.getName().equalsIgnoreCase("URLLC")) {
+
+            RestResponse res = getBearerToken();
+            clientOSM.VNFDescriptor(res.getBody().getAt("id").toString())
+
+        } else if (nstDescriptor.getName().equalsIgnoreCase("MassiveIoT")) {
+
+            RestResponse res = getBearerToken();
+            clientOSM.VNFDescriptor(res.getBody().getAt("id").toString())
+        }
 
         //respond new NSTDescriptor(params)
 

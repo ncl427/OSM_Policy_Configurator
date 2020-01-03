@@ -1,16 +1,16 @@
 package osm.policy.configurator
 
-class NSTDescriptor {
+class NSInstance {
 
     Long id
     String name
     String description
     String refId
     String json
-    NSDescriptor nsDescriptorId
+    NSTDescriptor nstDescriptorId
 
     static mapping = {
-        id column: "nstDescriptorId", generator: "sequence"
+        id column: "nsInstanceId", generator: "sequence"
     }
 
     static constraints = {
@@ -19,6 +19,6 @@ class NSTDescriptor {
         description(blank: true, nullable: true)
         refId(blank: true, nullable: true)
         json(blank: true, nullable: true)
-        nsDescriptorId(blank: true, nullable: true)
+        nstDescriptorId(blank: true, nullable: true)
     }
 }
