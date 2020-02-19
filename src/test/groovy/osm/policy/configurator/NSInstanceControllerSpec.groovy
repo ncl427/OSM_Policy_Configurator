@@ -5,7 +5,7 @@ import grails.testing.web.controllers.ControllerUnitTest
 import grails.validation.ValidationException
 import spock.lang.*
 
-class VNFDescriptorControllerSpec extends Specification implements ControllerUnitTest<VNFDescriptorController>, DomainUnitTest<VNFDescriptor> {
+class NSInstanceControllerSpec extends Specification implements ControllerUnitTest<NSInstanceController>, DomainUnitTest<NSInstance> {
 
     def populateValidParams(params) {
         assert params != null
@@ -17,7 +17,7 @@ class VNFDescriptorControllerSpec extends Specification implements ControllerUni
 
     void "Test the index action returns the correct model"() {
         given:
-        controller.VNFDescriptorService = Mock(VNFDescriptorService) {
+        controller.NSInstanceService = Mock(NSInstanceService) {
             1 * list(_) >> []
             1 * count() >> 0
         }
@@ -26,8 +26,8 @@ class VNFDescriptorControllerSpec extends Specification implements ControllerUni
         controller.index()
 
         then:"The model is correct"
-        !model.VNFDescriptorList
-        model.VNFDescriptorCount == 0
+        !model.NSInstanceList
+        model.NSInstanceCount == 0
     }
 
     void "Test the create action returns the correct model"() {
@@ -35,7 +35,7 @@ class VNFDescriptorControllerSpec extends Specification implements ControllerUni
         controller.create()
 
         then:"The model is correctly created"
-        model.VNFDescriptor!= null
+        model.NSInstance!= null
     }
 
     void "Test the save action with a null instance"() {
@@ -45,14 +45,14 @@ class VNFDescriptorControllerSpec extends Specification implements ControllerUni
         controller.save(null)
 
         then:"A 404 error is returned"
-        response.redirectedUrl == '/VNFDescriptor/index'
+        response.redirectedUrl == '/NSInstance/index'
         flash.message != null
     }
 
     void "Test the save action correctly persists"() {
         given:
-        controller.VNFDescriptorService = Mock(VNFDescriptorService) {
-            1 * save(_ as VNFDescriptor)
+        controller.NSInstanceService = Mock(NSInstanceService) {
+            1 * save(_ as NSInstance)
         }
 
         when:"The save action is executed with a valid instance"
@@ -60,38 +60,38 @@ class VNFDescriptorControllerSpec extends Specification implements ControllerUni
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'POST'
         populateValidParams(params)
-        def VNFDescriptor = new VNFDescriptor(params)
-        VNFDescriptor.id = 1
+        def NSInstance = new NSInstance(params)
+        NSInstance.id = 1
 
-        controller.save(VNFDescriptor)
+        controller.save(NSInstance)
 
         then:"A redirect is issued to the show action"
-        response.redirectedUrl == '/VNFDescriptor/show/1'
+        response.redirectedUrl == '/NSInstance/show/1'
         controller.flash.message != null
     }
 
     void "Test the save action with an invalid instance"() {
         given:
-        controller.VNFDescriptorService = Mock(VNFDescriptorService) {
-            1 * save(_ as VNFDescriptor) >> { VNFDescriptor VNFDescriptor ->
-                throw new ValidationException("Invalid instance", VNFDescriptor.errors)
+        controller.NSInstanceService = Mock(NSInstanceService) {
+            1 * save(_ as NSInstance) >> { NSInstance NSInstance ->
+                throw new ValidationException("Invalid instance", NSInstance.errors)
             }
         }
 
         when:"The save action is executed with an invalid instance"
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'POST'
-        def VNFDescriptor = new VNFDescriptor()
-        controller.save(VNFDescriptor)
+        def NSInstance = new NSInstance()
+        controller.save(NSInstance)
 
         then:"The create view is rendered again with the correct model"
-        model.VNFDescriptor != null
+        model.NSInstance != null
         view == 'create'
     }
 
     void "Test the show action with a null id"() {
         given:
-        controller.VNFDescriptorService = Mock(VNFDescriptorService) {
+        controller.NSInstanceService = Mock(NSInstanceService) {
             1 * get(null) >> null
         }
 
@@ -104,20 +104,20 @@ class VNFDescriptorControllerSpec extends Specification implements ControllerUni
 
     void "Test the show action with a valid id"() {
         given:
-        controller.VNFDescriptorService = Mock(VNFDescriptorService) {
-            1 * get(2) >> new VNFDescriptor()
+        controller.NSInstanceService = Mock(NSInstanceService) {
+            1 * get(2) >> new NSInstance()
         }
 
         when:"A domain instance is passed to the show action"
         controller.show(2)
 
         then:"A model is populated containing the domain instance"
-        model.VNFDescriptor instanceof VNFDescriptor
+        model.NSInstance instanceof NSInstance
     }
 
     void "Test the edit action with a null id"() {
         given:
-        controller.VNFDescriptorService = Mock(VNFDescriptorService) {
+        controller.NSInstanceService = Mock(NSInstanceService) {
             1 * get(null) >> null
         }
 
@@ -130,15 +130,15 @@ class VNFDescriptorControllerSpec extends Specification implements ControllerUni
 
     void "Test the edit action with a valid id"() {
         given:
-        controller.VNFDescriptorService = Mock(VNFDescriptorService) {
-            1 * get(2) >> new VNFDescriptor()
+        controller.NSInstanceService = Mock(NSInstanceService) {
+            1 * get(2) >> new NSInstance()
         }
 
         when:"A domain instance is passed to the show action"
         controller.edit(2)
 
         then:"A model is populated containing the domain instance"
-        model.VNFDescriptor instanceof VNFDescriptor
+        model.NSInstance instanceof NSInstance
     }
 
 
@@ -149,14 +149,14 @@ class VNFDescriptorControllerSpec extends Specification implements ControllerUni
         controller.update(null)
 
         then:"A 404 error is returned"
-        response.redirectedUrl == '/VNFDescriptor/index'
+        response.redirectedUrl == '/NSInstance/index'
         flash.message != null
     }
 
     void "Test the update action correctly persists"() {
         given:
-        controller.VNFDescriptorService = Mock(VNFDescriptorService) {
-            1 * save(_ as VNFDescriptor)
+        controller.NSInstanceService = Mock(NSInstanceService) {
+            1 * save(_ as NSInstance)
         }
 
         when:"The save action is executed with a valid instance"
@@ -164,31 +164,31 @@ class VNFDescriptorControllerSpec extends Specification implements ControllerUni
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'PUT'
         populateValidParams(params)
-        def VNFDescriptor = new VNFDescriptor(params)
-        VNFDescriptor.id = 1
+        def NSInstance = new NSInstance(params)
+        NSInstance.id = 1
 
-        controller.update(VNFDescriptor)
+        controller.update(NSInstance)
 
         then:"A redirect is issued to the show action"
-        response.redirectedUrl == '/VNFDescriptor/show/1'
+        response.redirectedUrl == '/NSInstance/show/1'
         controller.flash.message != null
     }
 
     void "Test the update action with an invalid instance"() {
         given:
-        controller.VNFDescriptorService = Mock(VNFDescriptorService) {
-            1 * save(_ as VNFDescriptor) >> { VNFDescriptor VNFDescriptor ->
-                throw new ValidationException("Invalid instance", VNFDescriptor.errors)
+        controller.NSInstanceService = Mock(NSInstanceService) {
+            1 * save(_ as NSInstance) >> { NSInstance NSInstance ->
+                throw new ValidationException("Invalid instance", NSInstance.errors)
             }
         }
 
         when:"The save action is executed with an invalid instance"
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'PUT'
-        controller.update(new VNFDescriptor())
+        controller.update(new NSInstance())
 
         then:"The edit view is rendered again with the correct model"
-        model.VNFDescriptor != null
+        model.NSInstance != null
         view == 'edit'
     }
 
@@ -199,13 +199,13 @@ class VNFDescriptorControllerSpec extends Specification implements ControllerUni
         controller.delete(null)
 
         then:"A 404 is returned"
-        response.redirectedUrl == '/VNFDescriptor/index'
+        response.redirectedUrl == '/NSInstance/index'
         flash.message != null
     }
 
     void "Test the delete action with an instance"() {
         given:
-        controller.VNFDescriptorService = Mock(VNFDescriptorService) {
+        controller.NSInstanceService = Mock(NSInstanceService) {
             1 * delete(2)
         }
 
@@ -215,7 +215,7 @@ class VNFDescriptorControllerSpec extends Specification implements ControllerUni
         controller.delete(2)
 
         then:"The user is redirected to index"
-        response.redirectedUrl == '/VNFDescriptor/index'
+        response.redirectedUrl == '/NSInstance/index'
         flash.message != null
     }
 }

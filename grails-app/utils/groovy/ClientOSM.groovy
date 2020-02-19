@@ -3,6 +3,7 @@ package groovy
 import grails.plugins.rest.client.RestBuilder
 import grails.plugins.rest.client.RestResponse
 import org.springframework.web.client.RestClientException
+import osm.policy.configurator.NSTDescriptor
 
 class ClientOSM {
 
@@ -123,7 +124,7 @@ class ClientOSM {
         }
     }
 
-    RestResponse NSDescriptor(String sliceServiceType) {
+    RestResponse NSDescriptor(String bearer) {
 
         try {
 
@@ -218,9 +219,11 @@ class ClientOSM {
         }
     }
 
-    RestResponse NSTDescriptor(String sliceServiceType) {
+    RestResponse NSTDescriptor(String bearer) {
 
         try {
+
+            NSTDescriptor nstDescriptor = new NSTDescriptor()
 
             def res = restBuilder.post("$url/osm/nst/v1/netslice_templates_content") {
                 contentType("application/json")
@@ -300,7 +303,7 @@ class ClientOSM {
         }
     }
 
-    RestResponse NSTInstantiate() {
+    RestResponse NSTInstantiate(String nstId) {
 
         try {
 

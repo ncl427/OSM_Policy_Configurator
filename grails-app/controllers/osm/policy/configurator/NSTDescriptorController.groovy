@@ -1,17 +1,10 @@
 package osm.policy.configurator
 
-import grails.config.Config
-import grails.plugins.rest.client.RestResponse
 import grails.validation.ValidationException
-import groovy.ClientOSM
 
 import static org.springframework.http.HttpStatus.*
 
 class NSTDescriptorController {
-
-    String url
-    String username
-    String password
 
     NSTDescriptorService NSTDescriptorService
 
@@ -19,7 +12,7 @@ class NSTDescriptorController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond NSTDescriptorService.list(params), model:[NSTDescriptorCount: NSTDescriptorService.count()]
+        respond NSTDescriptorService.list(params), model: [NSTDescriptorCount: NSTDescriptorService.count()]
     }
 
     def show(Long id) {
@@ -30,26 +23,10 @@ class NSTDescriptorController {
 
         NSTDescriptor nstDescriptor = new NSTDescriptor(params)
 
-        readPropertyFile();
-        ClientOSM clientOSM = new ClientOSM(url, username, password)
+        PolicyConfiguratorService policyConfiguratorService = new PolicyConfiguratorService();
+        policyConfiguratorService.serviceMethod(nstDescriptor);
 
-        if (nstDescriptor.getName().equalsIgnoreCase("eMBB")) {
-
-            RestResponse res = getBearerToken();
-            clientOSM.VNFDescriptor(res.getBody().getAt("id").toString())
-
-        } else if (nstDescriptor.getName().equalsIgnoreCase("URLLC")) {
-
-            RestResponse res = getBearerToken();
-            clientOSM.VNFDescriptor(res.getBody().getAt("id").toString())
-
-        } else if (nstDescriptor.getName().equalsIgnoreCase("MassiveIoT")) {
-
-            RestResponse res = getBearerToken();
-            clientOSM.VNFDescriptor(res.getBody().getAt("id").toString())
-        }
-
-        //respond new NSTDescriptor(params)
+        respond new NSTDescriptor(params)
 
     }
 
@@ -62,7 +39,7 @@ class NSTDescriptorController {
         try {
             NSTDescriptorService.save(NSTDescriptor)
         } catch (ValidationException e) {
-            respond NSTDescriptor.errors, view:'create'
+            respond NSTDescriptor.errors, view: 'create'
             return
         }
 
@@ -88,7 +65,7 @@ class NSTDescriptorController {
         try {
             NSTDescriptorService.save(NSTDescriptor)
         } catch (ValidationException e) {
-            respond NSTDescriptor.errors, view:'edit'
+            respond NSTDescriptor.errors, view: 'edit'
             return
         }
 
@@ -97,7 +74,7 @@ class NSTDescriptorController {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'NSTDescriptor.label', default: 'NSTDescriptor'), NSTDescriptor.id])
                 redirect NSTDescriptor
             }
-            '*'{ respond NSTDescriptor, [status: OK] }
+            '*' { respond NSTDescriptor, [status: OK] }
         }
     }
 
@@ -112,9 +89,9 @@ class NSTDescriptorController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.deleted.message', args: [message(code: 'NSTDescriptor.label', default: 'NSTDescriptor'), id])
-                redirect action:"index", method:"GET"
+                redirect action: "index", method: "GET"
             }
-            '*'{ render status: NO_CONTENT }
+            '*' { render status: NO_CONTENT }
         }
     }
 
@@ -124,15 +101,7 @@ class NSTDescriptorController {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'NSTDescriptor.label', default: 'NSTDescriptor'), params.id])
                 redirect action: "index", method: "GET"
             }
-            '*'{ render status: NOT_FOUND }
+            '*' { render status: NOT_FOUND }
         }
-    }
-
-    void readPropertyFile (){
-
-        Config config = grailsApplication.config
-        url = config.getProperty('osm.url')
-        username = config.getProperty('osm.username')
-        password = config.getProperty('osm.password')
     }
 }
